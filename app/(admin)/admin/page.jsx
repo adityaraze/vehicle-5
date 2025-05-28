@@ -1,19 +1,24 @@
 import { getDashboardData } from '@/actions/admin';
-import React from 'react'
+import React from 'react';
 import Dashboard from './_components/dashboard';
-export const metaData = {
-  title:"Dashboard | Vehiql Admin",
-  description:"Admin Dashboard for Vehiql Car Marketplace",
+
+export const metadata = {
+  title: "Dashboard | Vehiql Admin",
+  description: "Admin dashboard for Vehiql car marketplace",
 };
 
-const AdminPage = async() => {
-  const dashboardData = await getDashboardData();
-  return (
-    <div className='p-6'>
-      <h1 className='text-2xl font-bold mb-6'>Dashboard</h1>
-      <Dashboard initialData={dashboardData}/>
-    </div>
-  )
-}
+// ✅ Tell Next.js this route is dynamic
+export const dynamic = "force-dynamic";
 
-export default AdminPage
+const AdminPage = async () => {
+  const dashboardData = await getDashboardData();
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      <Dashboard initialData={dashboardData} />
+    </div>
+  );
+};
+
+export default AdminPage;

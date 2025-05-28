@@ -95,19 +95,17 @@ const CarList = () => {
   }, [carsError, deleteError, updateError]);
 
 
-  const deleteSuccess = deleteResult?.success;
-  const updateSuccess = updateResult?.success;
   useEffect(() => {
-    if (deleteSuccess) {
+    if (deleteResult?.success) {
       toast.success("Car deleted successfully");
       fetchCars(search);
     }
 
-    if (updateSuccess) {
+    if (updateResult?.success) {
       toast.success("Car updated successfully");
       fetchCars(search);
     }
-  }, [deleteSuccess, updateSuccess]);
+  }, [deleteResult, updateResult,search]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -159,10 +157,12 @@ const CarList = () => {
 
   return (
     <div className="space-y-4">
+      {/* Actions and Search */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+      
         <Button
           onClick={() => router.push("/admin/cars/create")}
-          className="flex items-center"
+          className="flex items-center w-full"
         >
           <Plus className="h-4 w-4" />
           Add Car
@@ -246,7 +246,7 @@ const CarList = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
-                            <DropdownMenuTrigger>
+                            <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
                                 size="sm"

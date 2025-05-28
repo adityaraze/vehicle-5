@@ -96,88 +96,98 @@ const HomeSearch = () => {
     });
   return (
     <div>
-      <form onSubmit={handleTextSubmit}>
-        <div className="relative flex items-center">
-          <Input
-            type="text"
-            placeholder="Enter make,model,or use our AI image search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-12 py-6 w-full rounded-full border-gray-300 bg-white/90 blackdrop-blur-sm"
-          />
-          <div className="absolute right-[100px]">
-            <Camera
-              size={35}
-              onClick={() => setIsImageSearchActive(!isImageSearchActive)}
-              className="cursor-pointer rounded-xl p-1.5"
-              style={{
-                background: isImageSearchActive ? "black" : "",
-                color: isImageSearchActive ? "white" : "",
-              }}
-            />
-          </div>
-          <Button type="submit" className="absolute right-2 rounded-full">
-            Search
-          </Button>
-        </div>
-      </form>
-      {isImageSearchActive && (
-        <div className="mt-4">
-          <form onSubmit={handleImageSearch}>
-            <div className="border-2 border-dashed broder-gray-300 rounded-3xl p-6 text-center">
-              {imagePreview ? (
-                <div className="flex flex-col items-center">
-                  <img
-                    src={imagePreview}
-                    alt="Car Preview"
-                    className="h-40 object-contain mb-4"
-                  />
-                  <Button
-                  variant="outline"
-                  onClick={()=>{
-                    setSearchImage(null);
-                    setImagePreview("");
-                    toast.info("Image Removed")
-                  }}
-                  >
-                    Remove Image
-                  </Button>
-                </div>
-              ) : (
-                <div {...getRootProps()} className="cursor-pointer">
-                  <input {...getInputProps()} />
-                  <div className="flex flex-col items-center">
-                    <Upload className="h-12 w-12 text-gray-400 mb-2"/>
-                  <p className="text-gray-500 mb-2">
-                    {isDragActive && !isDragReject ? 
-                  "Leave The File Here To Upload" : "Drap & Drop a Car Image Or Click To Select"}
-                  </p>
-                  {
-                    isDragReject && (
-                      <p className="text-red-500 mb-2">Invalid Image Type</p>
-                    )
-                  }
-                  <p className="text-gray-400 text-sm">
-                    Supports : JPEG JPG PNG (max 5MB)
-                  </p>
-                  </div>
-                </div>
-              )}
-            </div>
-            {imagePreview && (
-              <Button
-              variant="outline"
-              type="submit"
-              className="w-full mt-2"
-              disabled = {isUploading || isProcessing}
-              >
-                {isUploading ? "Uploading ..." : isProcessing ? "Analyzing Image" :"Search with this image"}
-              </Button>
-            )}
-          </form>
-        </div>
-      )}
+  <form onSubmit={handleTextSubmit}>
+    <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
+      <div className="relative w-full">
+        <Input
+          type="text"
+          placeholder="Enter make, model, or use our AI image search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="pl-12 pr-12 py-5 w-full rounded-full border border-gray-300 bg-white/90 shadow-sm focus:outline-none focus:ring-2 focus:ring-black transition-all duration-200"
+        />
+        <Camera
+          size={24}
+          onClick={() => setIsImageSearchActive(!isImageSearchActive)}
+          className="absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer p-1.5 rounded-full transition-colors duration-200"
+          style={{
+            background: isImageSearchActive ? "black" : "",
+            color: isImageSearchActive ? "white" : "#6b7280", // Tailwind gray-500
+          }}
+        />
+      </div>
+
+      <Button
+        type="submit"
+        className="rounded-full px-6 h-[3rem] w-full sm:w-auto text-white bg-black hover:bg-gray-800 transition"
+      >
+        Search
+      </Button>
     </div>
+  </form>
+
+  {isImageSearchActive && (
+    <div className="mt-6">
+      <form onSubmit={handleImageSearch}>
+        <div className="border-2 border-dashed border-gray-300 rounded-3xl p-6 text-center transition-all">
+          {imagePreview ? (
+            <div className="flex flex-col items-center">
+              <img
+                src={imagePreview}
+                alt="Car Preview"
+                className="h-40 object-contain mb-4 rounded-xl"
+              />
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchImage(null);
+                  setImagePreview("");
+                  toast.info("Image Removed");
+                }}
+              >
+                Remove Image
+              </Button>
+            </div>
+          ) : (
+            <div {...getRootProps()} className="cursor-pointer">
+              <input {...getInputProps()} />
+              <div className="flex flex-col items-center">
+                <Upload className="h-12 w-12 text-gray-400 mb-2" />
+                <p className="text-gray-500 mb-2">
+                  {isDragActive && !isDragReject
+                    ? "Leave the file here to upload"
+                    : "Drag & Drop a car image or click to select"}
+                </p>
+                {isDragReject && (
+                  <p className="text-red-500 mb-2">Invalid image type</p>
+                )}
+                <p className="text-gray-400 text-sm">
+                  Supports: JPEG, JPG, PNG (max 5MB)
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {imagePreview && (
+          <Button
+            variant="outline"
+            type="submit"
+            className="w-full mt-2"
+            disabled={isUploading || isProcessing}
+          >
+            {isUploading
+              ? "Uploading..."
+              : isProcessing
+              ? "Analyzing Image"
+              : "Search with this image"}
+          </Button>
+        )}
+      </form>
+    </div>
+  )}
+</div>
+
   );
 };
 
